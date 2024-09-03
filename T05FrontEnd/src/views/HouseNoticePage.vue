@@ -21,7 +21,7 @@
                       공고일: {{ notice.PAN_NT_ST_DT }}
                   </div>
                 </div> 
-                <img class="star" src="@/assets/icons/Star.svg">
+                <img @click="scrapNotice(notice)" class="star" src="@/assets/icons/Star.svg">
               </div>
             </div>
           </div>
@@ -105,14 +105,21 @@ export default {
       this.page = newPage;
       this.fetchNotices(); // 새로운 페이지의 데이터를 가져옵니다
     },
-    scrapNotice(){
-
-    },
     goToDetail(id) {
       // 상세 페이지로 이동
       console.log('Navigating to NoticeDetail with id:', id);
       this.$router.push({ name: 'HouseNoticeDetailPage', params: { id } });
-    }
+    }, 
+    scrapNotice(notice) {
+      let scrappedNotices = JSON.parse(localStorage.getItem('scrappedNotices')) || [];
+      if (!scrappedNotices.some(n => n.PAN_NM === notice.PAN_NM)) {
+        scrappedNotices.push(notice);
+        localStorage.setItem('scrappedNotices', JSON.stringify(scrappedNotices));
+        alert('스크랩');
+      } else {
+        alert('스크랩 취소');
+      }
+    },
   },
   created() {
     this.fetchNotices();
