@@ -9,9 +9,12 @@
       </div>
       <ul  v-if="notices.length">
         <li v-for="(notice, index) in notices" :key="index">
-          <div @click="goToDetail(notice.PAN_NM)">  
-            <div class="HouseNoticelist" v-if="notice.PAN_SS != '공고중'">
-              {{ notice.PAN_NM }}
+          <div >  
+            <div class="HouseNoticelist" v-if="notice.PAN_SS == '공고중'">
+              <div @click="goToDetail(notice.PAN_NM)">
+                {{ notice.PAN_NM }}
+              </div>
+              
               <div style="display: flex;">
                 <div style="width: 200px;">
                   <div style="color:blue; font-size: 28px; font-weight: 700;">
@@ -21,7 +24,7 @@
                       공고일: {{ notice.PAN_NT_ST_DT }}
                   </div>
                 </div> 
-                <img @click="scrapNotice(notice)" class="star" src="@/assets/icons/Star.svg">
+                <img @click.stop="scrapNotice(notice)" :class="{ 'star scrapped': notice.scrapped, 'star not-scrapped': !notice.scrapped }"  src="@/assets/icons/Star.svg">
               </div>
             </div>
           </div>
@@ -54,7 +57,8 @@ export default {
       error: null, // 오류 메시지
       totalPages:'50',
       page:1,
-      pageSize: 10
+      pageSize: 10,
+      scrappedNotices:[]
     };
   },
   computed: {
@@ -77,7 +81,7 @@ export default {
         const response = await axios.get(url, {
           params: {
             serviceKey: '0khvXNpZtCdvzH1Dw76HNtpDP/XhiNIzhKRU43Dnphe7oXSziRtpdtaP4FORD5VYkOYFt2vqQQO1VklahVTOsA==', // 실제 서비스 키로 교체
-            PG_SZ: 10,
+            PG_SZ: this.pageSize,
             PAGE: this.page,
           }
         });
@@ -108,14 +112,36 @@ export default {
       console.log('Navigating to NoticeDetail with id:', id);
       this.$router.push({ name: 'HouseNoticeDetailPage', params: { id } });
     }, 
+    loadScrappedNotices() {
+      try {
+        const savedNotices = JSON.parse(localStorage.getItem('scrappedNotices')) || [];
+        this.scrappedNotices = savedNotices;
+      } catch (error) {
+        console.error('Error loading scrapped notices:', error);
+      }
+    },
+    isScrapped(notice) {
+      return this.scrappedNotices.some(n => n.PAN_NM === notice.PAN_NM);
+    },
     scrapNotice(notice) {
-      let scrappedNotices = JSON.parse(localStorage.getItem('scrappedNotices')) || [];
-      if (!scrappedNotices.some(n => n.PAN_NM === notice.PAN_NM)) {
-        scrappedNotices.push(notice);
-        localStorage.setItem('scrappedNotices', JSON.stringify(scrappedNotices));
-        alert('스크랩');
+      const isScrapped = this.isScrapped(notice);
+      if (isScrapped) {
+        this.removeScrappedNotice(notice);
       } else {
-        alert('스크랩 취소');
+        this.addScrappedNotice(notice);
+      }
+    },
+    addScrappedNotice(notice) {
+      if (!this.isScrapped(notice)) {
+        this.scrappedNotices.push(notice);
+        localStorage.setItem('scrappedNotices', JSON.stringify(this.scrappedNotices));
+      }
+    },
+    removeScrappedNotice(notice) {
+      const index = this.scrappedNotices.findIndex(n => n.PAN_NM === notice.PAN_NM);
+      if (index !== -1) {
+        this.scrappedNotices.splice(index, 1);
+        localStorage.setItem('scrappedNotices', JSON.stringify(this.scrappedNotices));
       }
     },
   },
@@ -144,6 +170,7 @@ export default {
         justify-content: space-between;
         gap: 20px;
         margin: 1%;
+        z-index: 1;
     }
 
     .star{
@@ -151,6 +178,7 @@ export default {
         right:-10px;
         top:-30px;
         filter: saturate(0);
+        z-index: 3;
     }
 
     .scrapped{
