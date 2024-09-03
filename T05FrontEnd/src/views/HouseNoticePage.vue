@@ -77,23 +77,21 @@ export default {
         const response = await axios.get(url, {
           params: {
             serviceKey: '0khvXNpZtCdvzH1Dw76HNtpDP/XhiNIzhKRU43Dnphe7oXSziRtpdtaP4FORD5VYkOYFt2vqQQO1VklahVTOsA==', // 실제 서비스 키로 교체
-            PG_SZ: '10',
+            PG_SZ: 10,
             PAGE: this.page,
           }
         });
 
         console.log(response.data); // 응답 데이터 로그 출력
 
-        let responseData = response.data;
+        let responseData = response.data[1];
 
         if (responseData.dsList && Array.isArray(responseData.dsList)) {
           this.notices = responseData.dsList || [];
         } else if (responseData.dsList){
           this.error = 'dslist 없음';
-        } else if(!Array.isArray(responseData.dsList)){
-          console.log('responseData : '+ responseData);
-          this.notices = response.data[1].dsList;
-        }
+        } 
+        
       } catch (error) {
         this.error = error.message;
       } finally {        
