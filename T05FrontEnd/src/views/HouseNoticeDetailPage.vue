@@ -1,14 +1,82 @@
 <template>
   <Top/>
   <div class="housedetail wrapper">
-    <h1>상세 내용</h1>
-    <div v-if="notice">
-      <h2>{{ notice.PAN_NM }}</h2>
-      <p>공고일: {{ notice.PAN_NT_ST_DT }}</p>
-      <p>지역: {{ notice.CNP_CD_NM }}</p>
-      <p>공고 유형: {{ notice.UPP_AIS_TP_NM }} </p>
+    
+    <div class="innerpage">
+      
+      <div v-if="notice">
+        <div style="display: flex; justify-content: space-between;">
+          <div style="display: flex; flex-direction: column; justify-content: center;">
+            <p style="font-weight: 700">{{ notice.PAN_NM }}</p>
+          </div>
+          
+          <div style="display: flex; flex-direction: column; justify-content: center;">
+            <p style="width: 200px; color:#1F72D3; font-weight: 600;">기한: {{notice.CLSG_DT}}</p>
+          </div>
+          <button @click="goToLink(notice.DTL_URL)" class="detail-button">
+            <div>
+              해당기관 공고보기
+              <img src="../assets/icons/material-symbols-light_transit-enterexit.svg">
+            </div>
+          </button>
+        </div>
+        
+        <hr style="border: solid 1px lightgray; margin: 10px;">
+        <div style="display: flex;margin-bottom: 30px; ">
+          <div style="background-color: #1F72D3; width: 10px; margin: 5px;"></div>
+          <p><span style="font-weight: 600; margin-right: 20px;">신청 가능 일자</span> {{ notice.PAN_NT_ST_DT }} ~ {{ notice.CLSG_DT }}</p>
+        </div>
+        
+        <p>지역: {{ notice.CNP_CD_NM }}</p>
+        <p>공고 유형: {{ notice.AIS_TP_CD_NM }} </p>
+
+        <p style="color:gray; margin-top: 40px;;" >* 신청하기 전 월평균 소득과 자산 기준에 부합하는지 확인해보세요.</p>
+        <div style="margin: 30px 0px">
+          
+          <div style="margin-bottom: 40px;">
+            <p style="font-weight: 600; ">1 &#41; 월평균 소득</p>
+            <div style="display: flex;">
+              월평균 소득 확인하기 
+              <img class="triangle-icon" src="../assets/icons/play_arrow_filled.svg">
+              <button @click="goToLink('https://www.nhis.or.kr/nhis/minwon/wbhaba01000m01.do')" class="button-2">
+                국민건강보험 직장보험료
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <p style="font-weight: 600;">2 &#41; 자산</p>
+            <div style="display: flex; gap: 30px;">
+              &#10112; 총자산 가액
+              <p style="font-size: 18px; color: gray;">총자산가액= 토지 + 건물 + 자동차 + 금융자산 + 일반자산</p>
+            </div>
+            <div style="display: flex; margin-bottom: 20px;">
+                부동산 자산 확인하기 
+              <img class="triangle-icon" src="../assets/icons/play_arrow_filled.svg">
+              <button @click="goToLink('http://realtyprice.kr/notice/town/searchPastYear.htm')" class="button-2">
+                국토교통부
+              </button>
+            </div>
+
+            <div>
+              &#10113; 자동차 가액
+              <p>총자산가액= 토지 + 건물 + 자동차 + 금융자산 + 일반자산</p>
+            </div>
+            <div style="display: flex;">
+                자동차 가액 확인하기 
+              <img class="triangle-icon" src="../assets/icons/play_arrow_filled.svg">
+              <button class="button-2">
+                보험개발원
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p v-else>로딩 중...</p>
     </div>
-    <p v-else>로딩 중...</p>
+    
+    
+    
   </div>
   <Footer/>
 </template>
@@ -45,24 +113,32 @@ export default {
         const response = await axios.get(url, {
           params: {
             serviceKey: '0khvXNpZtCdvzH1Dw76HNtpDP/XhiNIzhKRU43Dnphe7oXSziRtpdtaP4FORD5VYkOYFt2vqQQO1VklahVTOsA==', // 실제 서비스 키로 교체
+            PAGE:1,
+            PG_SZ:1,
             PAN_NM: this.id 
           }
         });
 
-         let responseData = response.data;
-
+         let responseData = response.data[1];
+        
         if (responseData.dsList && Array.isArray(responseData.dsList)) {
-          this.notice = responseData.dsList || [];
+          console.log('detail responseData : '+ responseData);
+          this.notice = responseData.dsList[0] || {};
         } else if (responseData.dsList){
           this.error = 'dslist 없음';
-        } else if(!Array.isArray(responseData.dsList)){
-          console.log('detail responseData : '+ responseData);
-          this.notice = response.data[1].dsList;
-        }
+        } 
+
       } catch (error) {
         this.error = error.message;
       } finally {
         this.loading = false;
+      }
+    },
+    goToLink(link){
+      if (link){
+        window.open(link, '_blank');
+      }else{
+        alert('유효한 링크가 없습니다');
       }
     }
   },
@@ -82,6 +158,38 @@ export default {
   gap:20px;
   justify-content: center;
   padding:2%;
+}
+
+.detail-button{
+  border-radius: 10px;
+  background-color: #1F72D3;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 250px;
+  margin: 20px;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.button-2{
+  border-radius: 5px;
+  border: 1px solid #1F72D3;
+  color: #1F72D3;
+  padding: 1px 30px;
+  font-size: 20px;
+}
+
+.innerpage{
+  border: solid 1px lightgray;
+  padding: 40px;
+}
+
+.triangle-icon{
+  margin: 0px 40px;
+  width: 30px;
+  height: 30px;
 }
 </style>
   
