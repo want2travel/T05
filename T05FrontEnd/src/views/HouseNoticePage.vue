@@ -10,7 +10,7 @@
       <ul  v-if="notices.length">
         <li v-for="(notice, index) in notices" :key="index">
           <div @click="goToDetail(notice.PAN_NM)">  
-            <div class="HouseNoticelist">
+            <div class="HouseNoticelist" v-if="notice.PAN_SS != '공고중'">
               {{ notice.PAN_NM }}
               <div style="display: flex;">
                 <div style="width: 200px;">
@@ -91,7 +91,7 @@ export default {
         } else if (responseData.dsList){
           this.error = 'dslist 없음';
         } 
-        
+
       } catch (error) {
         this.error = error.message;
       } finally {        
