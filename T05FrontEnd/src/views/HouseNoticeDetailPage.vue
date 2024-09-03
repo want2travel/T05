@@ -5,9 +5,14 @@
     <div class="innerpage">
       
       <div v-if="notice">
-        <div style="display: flex; justify-content: space-evenly;">
-          <h2>{{ notice.PAN_NM }}</h2>
-          <p style="width: 300px;">기한: {{notice.CLSG_DT}}</p>
+        <div style="display: flex; justify-content: space-between;">
+          <div style="display: flex; flex-direction: column; justify-content: center;">
+            <p style="font-weight: 700">{{ notice.PAN_NM }}</p>
+          </div>
+          
+          <div style="display: flex; flex-direction: column; justify-content: center;">
+            <p style="width: 200px; color:#1F72D3; font-weight: 600;">기한: {{notice.CLSG_DT}}</p>
+          </div>
           <button @click="goToLink(notice.DTL_URL)" class="detail-button">
             <div>
               해당기관 공고보기
@@ -17,13 +22,13 @@
         </div>
         
         <hr style="border: solid 1px lightgray; margin: 10px;">
-        <div style="display: flex; ">
+        <div style="display: flex;margin-bottom: 30px; ">
           <div style="background-color: #1F72D3; width: 10px; margin: 5px;"></div>
-          <p>신청 가능 일자 {{ notice.PAN_NT_ST_DT }} ~ {{ notice.CLSG_DT }}</p>
+          <p><span style="font-weight: 600; margin-right: 20px;">신청 가능 일자</span> {{ notice.PAN_NT_ST_DT }} ~ {{ notice.CLSG_DT }}</p>
         </div>
         
         <p>지역: {{ notice.CNP_CD_NM }}</p>
-        <p>공고 유형: {{ notice.UPP_AIS_TP_NM }} </p>
+        <p>공고 유형: {{ notice.AIS_TP_CD_NM }} </p>
 
         <p style="color:gray; margin-top: 40px;;" >* 신청하기 전 월평균 소득과 자산 기준에 부합하는지 확인해보세요.</p>
         <div style="margin: 30px 0px">
@@ -41,11 +46,11 @@
 
           <div>
             <p style="font-weight: 600;">2 &#41; 자산</p>
-            <div>
+            <div style="display: flex; gap: 30px;">
               &#10112; 총자산 가액
-              <p>총자산가액= 토지 + 건물 + 자동차 + 금융자산 + 일반자산</p>
+              <p style="font-size: 18px; color: gray;">총자산가액= 토지 + 건물 + 자동차 + 금융자산 + 일반자산</p>
             </div>
-            <div style="display: flex;">
+            <div style="display: flex; margin-bottom: 20px;">
                 부동산 자산 확인하기 
               <img class="triangle-icon" src="../assets/icons/play_arrow_filled.svg">
               <button @click="goToLink('http://realtyprice.kr/notice/town/searchPastYear.htm')" class="button-2">
@@ -162,14 +167,14 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 300px;
+  width: 250px;
   margin: 20px;
   font-weight: 600;
   font-size: 20px;
 }
 
 .button-2{
-  border-radius: 10px;
+  border-radius: 5px;
   border: 1px solid #1F72D3;
   color: #1F72D3;
   padding: 1px 30px;
@@ -182,7 +187,7 @@ export default {
 }
 
 .triangle-icon{
-  margin: 0px 50px;
+  margin: 0px 40px;
   width: 30px;
   height: 30px;
 }
