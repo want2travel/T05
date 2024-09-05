@@ -6,7 +6,7 @@
                 <span style="font-size: 24px; color: gray;">전체 가구소득의 중간값</span>
             </div>
             <div class="list-box">
-                중위소득 100%이며, 이는 2,000,000원입니다.
+                중위소득 <input type="number">%이며, 이는 <input type="number">원입니다.
             </div>
         </div>
         <div class="list-item">
@@ -14,7 +14,7 @@
                 <span style="font-weight: 600;">2. 부양의무자, 가구원 수 </span>
             </div>
             <div class="list-box">
-                부양의무자가 0명 있습니다. 가구원 수는 1명입니다.
+                부양의무자가 <input type="number">명 있습니다. 가구원 수는 <input type="number">명입니다.
             </div>
         </div>
         <div class="list-item">
@@ -22,7 +22,7 @@
                 <span style="font-weight: 600;">3. 나이와 건강 </span>
             </div>
             <div class="list-box">
-                현재 만 21세이며, 주요 병력 사항이 없습니다
+                현재 만 <input type="number">세이며, 주요 병력 사항이 없습니다
             </div>
         </div>
         <div class="list-item">
@@ -35,25 +35,15 @@
         </div>
         
         <div style="display: flex; justify-content: center;">
-            <button class="self-test-button"  @click="goToSelfTest">
+            <button class="self-test-button" >
                 자가진단 수정하기
             </button>
         </div>
     </div>
 </template>
 <script>
-import SelfTest1 from '@/components/SelfTest/SelfTest1.vue';
-
 export default {
-    name:'SelfTestComponent',
-    components:{
-        SelfTest1
-    },
-    methods:{
-        goToSelfTest(){
-            
-        }
-    }
+    name:'SelfTest1'
 }
 </script>
 <style>

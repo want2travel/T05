@@ -35,6 +35,7 @@ import MyInfo from '@/components/MyPage/MyInfo.vue';
 import ChangePassword from '@/components/MyPage/ChangePassword.vue';
 import MySelfTest from '@/components/MyPage/MySelfTest.vue';
 import ScrappedNotice from '@/components/MyPage/ScrappedNotice.vue';
+
 export default {
   name: 'MyPage',
   components:{
@@ -43,7 +44,7 @@ export default {
     MyInfo,
     ChangePassword,
     MySelfTest,
-    ScrappedNotice
+    ScrappedNotice,
   },
 
   data() {
