@@ -81,4 +81,6 @@ export default {
         padding: 10px 80px;
         font-size: 30px;
     }
+
+    
 </style>

@@ -36,17 +36,18 @@
         </div>
         
       </div>
+      <!--페이지네이션-->
+      <div class="pagination">
+        <button
+          v-for="(slide, index) in slides"
+          :key="index"
+          :class="{ active: currentSlide === index }"
+          @click="goToSlide(index)"
+        ></button>
+      </div>
     </div>
 
-    <!--페이지네이션-->
-    <div class="pagination">
-      <button
-        v-for="(slide, index) in slides"
-        :key="index"
-        :class="{ active: currentSlide === index }"
-        @click="goToSlide(index)"
-      ></button>
-    </div>
+    
 </template>
 <script>
 
@@ -173,8 +174,9 @@ export default {
 
 .pagination {
   position: relative;
-  transform: translate(-160px, 350px);
+  transform: translate(-450px, -3550px);
   display: flex;
+  scale: 30%;
   gap: 5px;
 }
 
