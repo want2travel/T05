@@ -23,7 +23,10 @@
             <div>메뉴 > 마이페이지 > {{ currentMenuText }}</div>
             <hr style="position: relative; margin: 25px 0px; border: 1px solid lightgray;"/>
             <div style="width: 100%;"></div>
-            <component :is="currentView" />
+            <component :is="currentView" 
+                       :currentMenuText="currentMenuText"
+                       :selectedMenu="selectedMenu"
+                       @update-menu="handleMenuUpdate" />
           </div>
         </div>
     <Footer/>
@@ -35,7 +38,7 @@ import MyInfo from '@/components/MyPage/MyInfo.vue';
 import ChangePassword from '@/components/MyPage/ChangePassword.vue';
 import MySelfTest from '@/components/MyPage/MySelfTest.vue';
 import ScrappedNotice from '@/components/MyPage/ScrappedNotice.vue';
-
+import SelfTest1 from '@/components/SelfTest/SelfTest1.vue';
 export default {
   name: 'MyPage',
   components:{
@@ -45,6 +48,7 @@ export default {
     ChangePassword,
     MySelfTest,
     ScrappedNotice,
+    SelfTest1
   },
 
   data() {
@@ -52,25 +56,36 @@ export default {
       currentMenuText:'회원정보',
       selectedMenu:0,
       currentView: 'MyInfo',
-      pages:[
-        MyInfo,
-        ChangePassword,
-        MySelfTest,
-        ScrappedNotice
-      ],
-      menuTexts: [
-        '회원정보',
-        '비밀번호 변경',
-        '나의 자가진단',
-        '공고문 스크랩'
-      ]
+      pages: {
+        MyInfo: MyInfo,
+        ChangePassword: ChangePassword,
+        MySelfTest: MySelfTest,
+        ScrappedNotice: ScrappedNotice,
+        SelfTest1: SelfTest1
+      },
+      menuTexts: {
+        MyInfo: '회원정보',
+        ChangePassword: '비밀번호 변경',
+        MySelfTest: '나의 자가진단',
+        ScrappedNotice: '공고문 스크랩',
+        SelfTest1: '나의 자가진단 > 자가진단 수정하기'
+      }
     };
   },
   methods:{
-    selectMenu(divNumber){
-      this.selectedMenu=divNumber;
-      this.currentView=this.pages[divNumber];
-      this.currentMenuText=this.menuTexts[divNumber];
+    selectMenu(index){
+      const keys = Object.keys(this.pages);
+      this.selectedMenu = index;
+      this.currentView = keys[index];
+      this.currentMenuText = this.menuTexts[keys[index]];
+    },
+    handleMenuUpdate({ view }) {
+      if (this.pages[view]) {  // 유효한 페이지인지 확인
+        this.currentView = view;
+        this.currentMenuText = this.menuTexts[view] || '알 수 없는 메뉴';
+      } else {
+        console.warn(`메뉴에 없는 컴포넌트로 변경하려 했습니다: ${view}`);
+      }
     }
   }
 };

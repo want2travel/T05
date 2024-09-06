@@ -42,16 +42,21 @@
     </div>
 </template>
 <script>
-import SelfTest1 from '@/components/SelfTest/SelfTest1.vue';
 
 export default {
     name:'SelfTestComponent',
     components:{
-        SelfTest1
+
+    },
+    props: {
+        currentMenuText: String,
+        selectedMenu: Number,
     },
     methods:{
-        goToSelfTest(){
-            
+        goToSelfTest() {
+            this.$emit('update-menu', {
+                view: 'SelfTest1' // ExtraComponent로 이동
+            });
         }
     }
 }
