@@ -5,6 +5,8 @@ import HouseNoticePage from '@/views/HouseNoticePage.vue';
 import FAQPage from '@/views/FAQPage.vue';
 import ComparePage from '@/views/ComparePage.vue';
 import HouseNoticeDetailPage from '@/views/HouseNoticeDetailPage.vue';
+import loginPage from '@/views/LoginPage.vue';
+import signupPage from '@/views/SignupPage.vue';
 
 const routes = [
     {
@@ -13,8 +15,8 @@ const routes = [
         component: MainPage
     },
     {
-        path: '/TestPage',
-        name: 'TestPage',
+        path: '/profilePage',
+        name: 'ProfilePage',
         component: MyPage
     },
     {
@@ -37,6 +39,16 @@ const routes = [
         name: 'HouseNoticeDetailPage',
         props: true,
         component: HouseNoticeDetailPage
+    },
+    {
+        path: '/loginPage',
+        name: 'LoginPage',
+        component: loginPage
+    },
+    {
+        path: '/api/signupPage',
+        name: 'SignupPage',
+        component: signupPage
     }
 ]
 
