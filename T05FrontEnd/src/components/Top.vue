@@ -10,7 +10,7 @@
               <li class="top-navbar-item">자주 묻는 질문</li>
           </ul>
         <div class="user">
-          <img @click="goToTest" class="account-circle" src="../assets/icons/account_circle.svg" />
+          <img @click="goToProfile" class="account-circle" src="../assets/icons/account_circle.svg" />
           <div class="username">정예빈</div>
           <img class="menu-icon" src="../assets/icons/menu.svg" />
         </div>
@@ -21,8 +21,22 @@
   export default {
     name:'TopComponent',
       methods: {
-        goToTest() {
-          this.$router.push('/TestPage');  // '/test' 경로로 이동
+        async goToProfile() {
+          try {
+            const res = await fetch('/profilePage', {
+              method: 'GET',
+              credentials: 'include', // 인증 정보를 함께 전송
+            });
+            if (res.ok) {
+              // 인증 성공 시 프로필 페이지로 이동
+              this.$router.push('/profilePage');
+            } else {
+              // 인증 실패 시 로그인 페이지로 이동
+              this.$router.push('/loginPage');
+            }
+          } catch (error) {
+            this.$router.push('/loginPage'); // 오류 발생 시 로그인 페이지로 리다이렉트
+          }
         },
         goToMainPage(){
           this.$router.push('/');
@@ -30,11 +44,6 @@
         goToHouseNoticePage(){
           this.$router.push('/HouseNoticePage')
         }
-      },
-      data() {
-        return {
-          
-        };
       },
     }
 </script>
