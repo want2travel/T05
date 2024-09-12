@@ -1,0 +1,31 @@
+POST http://192.168.219.100:8080/login
+Content-Type: application/json
+
+{
+    "id": "sdijii3",
+    "password": "sdijii4"
+}
+
+###
+POST http://192.168.219.100:8080/api/register
+Content-Type: application/json
+
+{
+    "id": "yidong",
+    "password": "yedk0204",
+    "name": "kyd",
+    "email": "yedk453838@gmail.com",
+    "age": "21",
+    "gender": "m",
+    "address": "서울시 영등포구 신길로 100 우창아프트 113호",
+    "median_income": 1500000,
+    "household_category": "장애인",
+    "level_disabled": "심하지 않음",
+    "spec_group": "저소득층",
+    "family_count": 4
+}
+
+###
+
+GET http://192.168.219.100:8080/sdijii3
+# Content-Type: application/json
