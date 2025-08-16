@@ -30,14 +30,14 @@ app.use(passport.session());
 app.use('/api', registerRoute);
 
 // 로그인 라우트
-app.post('/loginPage', passport.authenticate('local', {
+app.post('/api/login', passport.authenticate('local', {
   successRedirect: '/profilePage',
   failureRedirect: '/loginPage',
   failureFlash: true
 }));
 
 // 프로필 라우트
-app.get('/profilePage', (req, res) => {
+app.get('/api/profile', (req, res) => {
   if (req.isAuthenticated()) {
     res.json({ message: 'Welcofme to your profile!', user: req.user });
   } else {
@@ -102,3 +102,4 @@ const getLocalIPs = () => {
 app.listen(port, '0.0.0.0', () => { // '0.0.0.0'을 사용하여 외부 IP에서도 접근 가능하도록 설정
   console.log(`Server is running on http://${getLocalIPs()[0]}:${port}`);
 });
+
